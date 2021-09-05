@@ -55,6 +55,9 @@ The purpose of this project is to utilize the information about each patient to 
 
 ![Sex vs Heart Disease](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/Sex%20vs.%20Heart%20Disease.png)
 
+
+## Performance Results
+
 ![Performance Table](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/Evaluation%20of%20Models.png)
 
 ![k-Folds Cross-Validation Table](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/K-folds%20Cross%20Validation%20Table.png)
