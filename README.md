@@ -42,18 +42,24 @@ The purpose of this project is to utilize the information about each patient to 
 
 
 ## Presentations and Reports
-* [Final Report](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Flu-Vaccines-Prediction/blob/main/Report/Flu%20Vaccines%20Prediction%20-%20Data%20Analysis%20Report.pdf)
-* [Presentation Slides](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Flu-Vaccines-Prediction/blob/main/Presentation/Final%20Presentation%20-%20Jimmy%20Nguyen.pdf)
-* [Python Code](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Flu-Vaccines-Prediction/blob/main/Presentation/Final%20Presentation%20-%20Jimmy%20Nguyen.pdf)
-* [R-programming Code](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Flu-Vaccines-Prediction/blob/main/Presentation/Final%20Presentation%20-%20Jimmy%20Nguyen.pdf)
+* [Final Report](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Report/Project%20Report.pdf)
+* [Presentation Slides](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Presentation/Project%20Presentation.pdf)
+* [Python Code](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Code/Python%20Jupyter%20Notebook/Python%20Jupyter%20Notebook.pdf)
+* [R-programming Code](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Code/R%20code/Data%20Exploration%20-%20R.pdf)
 
 
 ## Data Visualizations
-![Survey Responses](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Flu-Vaccines-Prediction/blob/main/Data%20Visuals/Beh.%20Questions.png)
+![Age Groups](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/Age%20Groups.png)
 
-![Vaccine Concerns about Effects](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Flu-Vaccines-Prediction/blob/main/Data%20Visuals/H1N1%20Con%20vs%20Vac.png)
+![Age Groups vs Resting Blood Pressure](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/Age%20Groups%20vs%20Resting%20Blood%20Pressure.png)
 
-![Vaccine Recommendations based on Gender](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Flu-Vaccines-Prediction/blob/main/Data%20Visuals/Vaccine%20Recommendations.png)
+![Sex vs Heart Disease](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/Sex%20vs.%20Heart%20Disease.png)
+
+![Performance Table](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/Evaluation%20of%20Models.png)
+
+![k-Folds Cross-Validation Table](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/K-folds%20Cross%20Validation%20Table.png)
+
+![ROC-AUC Curves](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/ROC%20AUC%20Curves.png)
 
 
 ## Original Data 
