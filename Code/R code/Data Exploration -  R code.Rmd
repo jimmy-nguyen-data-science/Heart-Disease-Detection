@@ -1,0 +1,704 @@
+---
+title: "Heart Disease Detection Project"
+author: "Jimmy Nguyen"
+output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: true
+    toc_depth: 5
+---
+
+
+# The Data Science Methodology 
+1. Problem Understanding Phase
+2. Data Preparation Phase 
+3. Exploratory Data Analysis Phase
+4. Setup Phase
+5. Modeling Phase 
+6. Evaluation Phase
+7. Deployment Phase
+
+
+## Problem Understanding Phase 
+### Project Objectives
+The purpose of this project is to assist health-care providers and physicians to increase the number of accurate heart disease diagnosis. 
+
+**The objectives of this analysis are as follows:**
+
+  1. Learn about potential patients who may be at risk with heart disease. That is, learn the characteristics of those who have heart disease, as well as those who do not.
+  
+  2. Develop an efficient and reliable method of identifying likely positive cases of heart disease, so that we may proceed with treatment and save lives. That is, develop a model or models that may identify likely positive cases of heart disease.
+
+
+### Translating These Objectives into a Data Science Problem
+
+1. There are many ways to learn about patients with or without heart diseases.
+  
+    a. Use exploratory data analysis to analyze the relationship between variables by expressing     
+      visualizations such as observing an independent variable with the target variable overlain with
+      information about positive or negative for heart disease. 
+    
+    
+    b. Use clustering to determine whether there are natural groupings among patients with either diagnosis
+      for heart disease, for example, younger males vs. older males. Then, see if these clusters differ
+      with respect to their diagnosis of heart disease. 
+  
+  
+    c. Use association rules to analyze useful relationships among the characteristics of patients
+      diagnosed with heart disease.
+    
+2. Since the target variable in this data set has binary categorical values, this is treated using classification models and as a binary classification problem.
+
+    a. Develope the best classification models, using the following algorithms:
+    
+        i. Decision Trees 
+        ii. Random Forests
+        iii. Naive Bayes Classification
+        iv. Neural Networks
+        v. Logistic Regression. 
+        
+    b. Evaluate each model based on the following predetermined model evlauation criteria:
+        
+        i. Misclassification costs
+        ii. Precision
+        iii. Sensitivity (Recall)
+        iv. F-score (Harmonic Mean)
+        
+        Construct a table of the best models and their costs. 
+    
+### About the Data
+
+The data set was originally provided by the University of California, Irvine repository and was hosted on Kaggle for the public. In total, this data set has only 303 rows and 14 columns. Thirteen of the columns contain information about each patient whereas the last column is the target variable of interest. The last column contains binary values of zeroes and ones indicating the presence of heart disease. Other columns behaved as independent variables such as the patients demographic information and measurements of their physical health. This data set contains both continuous and discrete values.
+
+- The data set can be found here on Kaggle: https://www.kaggle.com/ronitf/heart-disease-uci
+
+- The data set can be found here from UCI Repository: https://archive.ics.uci.edu/ml/datasets/heart+disease 
+
+## Data Preparation Phase
+
+### Packages 
+
+- These are the packages used in this data report
+```{r, warning=FALSE, message=FALSE}
+library(flextable)
+library(tidyverse)
+library(pander)
+library(plyr)
+```
+
+
+### Load in Data 
+
+- The following code reads in the heart disease data-set.
+
+**R code**
+```{r, message=FALSE}
+df <- read_csv("heart.csv")
+```
+
+```{r echo=FALSE}
+head(df) %>% pander(style = "grid", caption = "Heart Disease Data Set")
+
+```
+
+
+```{r echo = FALSE}
+df <- subset(df, select = -c(thal)) # Drop "thal" column 
+df$age <- as.integer(df$age) # convert age into integer data type
+df$sex <- as.factor(df$sex) # convert sex as categorical
+df$cp <- factor(df$cp, levels= c(0,1,2,3)) # convert cp as categorical with levels
+df$trestbps <- as.integer(df$trestbps) # convert trestbps as integer data type
+df$chol <- as.integer(df$chol) # convert chol as integer data type
+df$fbs <- as.factor(df$fbs) # convert fbs as categorical
+df$restecg <- factor(df$restecg, levels = c(0,1,2)) # convert restecg as categorical with levels
+df$thalach <- as.integer(df$thalach) # convert thalach as integer data type
+df$exang <- as.factor(df$exang) # convert exang as categorical
+df$oldpeak <- as.double(df$oldpeak) # convert old peak as categorical
+df$slope <- factor(df$slope, levels = c(0,1,2)) # convert slope as categorical with levels
+df$ca <- as.factor(df$ca) # convert ca as categorical
+df$target <- as.factor(df$target) # convert target as categorical
+```
+
+
+
+
+### Re-expressing Categorical Field Values
+
+- The following chunk of code replaces numerical categorical values to their original categorical values as factors.
+
+**R code:**
+```{r}
+# mapped values to female and male
+df$sex <- revalue(x = df$sex, replace = c("0" = "female",
+"1" = "male")) 
+
+# mapped values for chest pain
+df$cp <- revalue(x = df$cp, replace = c("0" = "typical angina",
+                                      "1" = "atypical angina",
+                                      "2" = "non-anginal pain", 
+                                      "3" = "asymptomatic"))
+
+# mapped values for fastinb blood sugar
+df$fbs <- revalue(x = df$fbs, replace = c("0"="false",
+                                          "1" = "true"))
+
+# mapped values for resting blood pressure
+df$restecg <- revalue(x = df$restecg, replace = c("0" = "normal",
+                                                  "1" = "abnormal",
+                                                  "2" = "probable hypertrophy"))
+
+# mapped values for exercised-induced angina
+df$exang <- revalue(x = df$exang, replace = c("0" = "no",
+                                              "1" = "yes"))
+
+# mapped values for slope
+df$slope <- revalue(x = df$slope, replace = c("0" = "upsloping",
+                                              "1" = "flat",
+                                              "2" = "downsloping"))
+
+
+```
+
+
+
+### Handling Missing Data 
+
+
+
+```{r echo = FALSE}
+columns <- c(names(df))
+missing_values <- c()
+
+for (name in columns) {
+  missing_values <- c(missing_values, sum(is.na(df[,name])))
+}
+
+
+miss_df <- data.frame(columns, missing_values)
+```
+
+- The following table displays each column as a row and the number of missing values in each column. 
+
+```{r echo = FALSE}
+missing_values <- c(sum(is.na(df)))
+colnames(miss_df) <- c("Columns","Number of Missing Value")
+miss_df %>% pander(style = "grid", caption = "Count of Missing Values")
+```
+-  This table shows that there are no missing values in this data set.
+
+### Identifying Misclassifications
+
+- The categorical variables in this data set are the following:
+
+**R code**
+
+```{r}
+cat_vars <- df[,names(df[,sapply(df, is.factor)])]
+```
+
+```{r echo = FALSE}
+#colnames(cat_vars) <- c("Categorical Variables")
+head(cat_vars,5) %>% pander(style = "grid", caption = "Table of Categorical Variables")
+```
+
+- The following tables check the classes of all the categorical variables for validity and consistency.
+
+```{r echo = FALSE}
+cat_vars <- names(df[,sapply(df, is.factor)])
+
+df[, cat_vars] %>% group_by(sex) %>% dplyr::summarise(total = n()) %>% pander(style = "grid", caption = "Classes in Sex")
+df[, cat_vars] %>% group_by(cp) %>% dplyr::summarise(total = n()) %>% pander(style = "grid", caption = "Classes in Chest Pain")
+df[, cat_vars] %>% group_by(fbs) %>% dplyr::summarise(total = n()) %>% pander(style = "grid", caption = "Classes in Fasting Blood Sugar")
+df[, cat_vars] %>% group_by(restecg) %>% dplyr::summarise(total = n()) %>% pander(style = "grid", caption = "Classes in Resting Electrocardiographic Results")
+df[, cat_vars] %>% group_by(exang) %>% dplyr::summarise(total = n()) %>% pander(style = "grid", caption = "Classes in Exercise-Induced Angina ")
+df[, cat_vars] %>% group_by(slope) %>% dplyr::summarise(total = n()) %>% pander(style = "grid", caption = "Classes in Heart Disease Diagnosis")
+
+```
+
+### Check for Normality
+
+```{r echo = FALSE}
+catCols <- names(df[,sapply(df, is.factor)])
+cont_df <- df[, !names(df) %in% catCols]
+head(cont_df,5) %>%  pander(style = "grid", caption = "Continuous Variables")
+
+```
+
+#### Observing Normality in: _age_
+
+```{r echo = FALSE}
+
+transformations <- function(column) {
+  
+  
+  org.col <- cont_df[,column]
+  sqrt.col <- sqrt(cont_df[,column])
+  ln.col <- log(cont_df[, column])
+  inv.col <- 1/sqrt(cont_df[, column])
+  
+  
+  org.df <- data.frame(age = org.col)
+  sqrt.df <- data.frame(age = sqrt.col)
+  ln.df <- data.frame(age = ln.col)
+  inv.df <- data.frame(age = inv.col)
+
+
+
+  org.df$hist <- "Original Data"
+  sqrt.df$hist <- "Square Root"
+  ln.df$hist <- "Natural Log"
+  inv.df$hist <- "Inverse Square Root"
+
+  hists <- rbind(org.df, sqrt.df, ln.df, inv.df)
+  hists$hist <- factor(hists$hist, levels = c("Original Data", "Square Root", 
+                                            "Natural Log", "Inverse Square Root"))
+  
+  return(hists)
+  
+}
+
+
+skew <- function(column) {
+  org.col <- cont_df[[column]] # original 
+  org.col_skew <- (3*(mean(org.col) - median(org.col))) / sd(org.col)
+
+  sqrt.col <- sqrt(cont_df[[column]]) # Square root
+  sqrt.col_skew <- (3*(mean(sqrt.col) - median(sqrt.col))) / sd(sqrt.col)
+
+
+  ln.col <- log(cont_df[[column]]) # Natural log
+  ln.col_skew <- (3*(mean(ln.col) - median(ln.col))) / sd(ln.col)
+
+
+  invsqrt.col <- 1 / sqrt(cont_df[[column]]) # Inverse square root
+  invsqrt.col_skew <- (3*(mean(invsqrt.col) - median(invsqrt.col))) /sd(invsqrt.col)
+  
+  skewness <- data.frame(c("Original Data Skewness",
+                         "Square Root of Data Skewness", 
+                        "Natural Log of Data Skewness", 
+                        "Inverse Square Root of Data Skewness"),
+                       c(org.col_skew, sqrt.col_skew,
+                         ln.col_skew, invsqrt.col_skew))
+
+  colnames(skewness) <- c("Transformations","Skewness")
+  
+  return(skewness)
+  
+}
+```
+
+
+```{r echo = FALSE, fig.align='center'}
+
+hists <- transformations("age")
+  
+ggplot(hists, aes(x = age, fill = hist)) + 
+  geom_density(color="black") + 
+  facet_wrap(.~ hist, scales = 'free', nrow =2) + 
+  labs(title = "Distribution of Age by Transformations",
+         x = "",
+         y = "Number of Patients") +
+    theme_bw() + 
+  guides(fill=guide_legend(title="Transformations"))
+```
+
+
+```{r echo =FALSE, fig.align='center'}
+skew("age") %>% pander(style = "grid", caption = "Skewness by Transformation: 'Age'")
+
+```
+
+
+
+```{r echo = FALSE, fig.align='center'}
+
+sqrt.age <- as.double(unlist(hists %>% filter(hist == "Square Root") %>% select(age)))
+
+qqnorm(sqrt.age,
+datax = TRUE,
+col = "red",
+main = "Normal
+Q-Q Plot of Square Root of Age", 
+ylab = "Quantiles of Square Root",
+xlab = "Quantiles of a Normal Distribution")
+qqline(sqrt.age,
+col = "blue",
+datax = TRUE) 
+
+```
+
+
+#### Observing Normality in: _trestbps_
+
+```{r echo=FALSE, fig.align='center'}
+
+hists <- transformations("trestbps") 
+ggplot(hists, aes(x = trestbps, fill = hist)) + 
+  geom_density(color="black") + 
+  facet_wrap(.~ hist, scales = 'free', nrow =2) + 
+  labs(title = "Density Curve of Resting Blood Pressure (mmhg) by Transformations",
+         x = "",
+         y = "Proportions") +
+    theme_bw() + 
+  guides(fill=guide_legend(title="Transformations"))
+```
+
+
+```{r echo= FALSE}
+skew("trestbps") %>% pander(style = "grid", caption = "Skewness by Transformation: 'trestbps'")
+```
+
+
+
+```{r echo = FALSE, fig.align='center'}
+
+inv.trest <- as.double(unlist(hists %>% filter(hist == "Inverse Square Root") %>% select(trestbps)))
+
+qqnorm(inv.trest,
+datax = TRUE,
+col = "red",
+main = "Normal
+Q-Q Plot of Inverse Square Root of 'trestbps'", 
+ylab = "Quantiles of Inverse Square Root",
+xlab = "Quantiles of a Normal Distribution")
+qqline(inv.trest,
+col = "blue",
+datax = TRUE) 
+
+```
+#### Observing Normality in: _chol_
+
+```{r echo=FALSE, fig.align='center'}
+
+hists <- transformations("chol") 
+ggplot(hists, aes(x = chol, fill = hist)) + 
+  geom_density(color="black") + 
+  facet_wrap(.~ hist, scales = 'free', nrow =2) + 
+  labs(title = "Density Curve of Cholestoral (mg/dl) by Transformations",
+         x = "",
+         y = "Proportions") +
+    theme_bw() + 
+  guides(fill=guide_legend(title="Transformations"))
+```
+
+```{r echo= FALSE}
+skew("chol") %>% pander(style = "grid", caption = "Skewness by Transformation: 'chol'")
+```
+
+
+```{r echo = FALSE, fig.align='center'}
+
+ln.chol <- as.double(unlist(hists %>% filter(hist == "Natural Log") %>% select(chol)))
+
+qqnorm(ln.chol,
+datax = TRUE,
+col = "red",
+main = "Normal
+Q-Q Plot of Natural Log of 'chol'", 
+ylab = "Quantiles of Natural Log",
+xlab = "Quantiles of a Normal Distribution")
+qqline(ln.chol,
+col = "blue",
+datax = TRUE) 
+
+```
+
+#### Observing Normality in: _thalach_
+
+
+```{r echo=FALSE, fig.align='center'}
+
+hists <- transformations("thalach") 
+ggplot(hists, aes(x = thalach, fill = hist)) + 
+  geom_density(color="black") + 
+  facet_wrap(.~ hist, scales = 'free', nrow =2) + 
+  labs(title = "Density Curve of Maximum Hear Rate by Transformations",
+         x = "",
+         y = "Proportions") +
+    theme_bw() + 
+  guides(fill=guide_legend(title="Transformations"))
+```
+
+
+```{r echo= FALSE}
+skew("thalach") %>% pander(style = "grid", caption = "Skewness by Transformation: 'thalach'")
+```
+
+
+```{r echo = FALSE, fig.align='center'}
+
+org.thalach <- as.double(unlist(hists %>% filter(hist == "Original Data") %>% select(thalach)))
+
+qqnorm(org.thalach,
+datax = TRUE,
+col = "red",
+main = "Normal
+Q-Q Plot of Original Data: 'thalach'", 
+ylab = "Quantiles of Original Data ",
+xlab = "Quantiles of a Normal Distribution")
+qqline(org.thalach,
+col = "blue",
+datax = TRUE) 
+
+```
+
+
+
+#### Observing Normality in: _thalach_
+
+
+```{r echo=FALSE, fig.align='center', warning=FALSE}
+
+hists <- transformations("oldpeak") 
+ggplot(hists, aes(x = oldpeak, fill = hist)) + 
+  geom_density(color="black") + 
+  facet_wrap(.~ hist, scales = 'free', nrow =2) + 
+  labs(title = "Density Curve of 'oldpeak' by Transformations",
+         x = "",
+         y = "Proportions") +
+    theme_bw() + 
+  guides(fill=guide_legend(title="Transformations"))
+```
+
+
+
+
+```{r echo= FALSE}
+skew("oldpeak") %>% pander(style = "grid", caption = "Skewness by Transformation: 'oldpeak'")
+```
+
+```{r echo = FALSE, fig.align='center'}
+
+sqrt.oldpeak<- as.double(unlist(hists %>% filter(hist == "Square Root") %>% select(oldpeak)))
+
+qqnorm(sqrt.oldpeak,
+datax = TRUE,
+col = "red",
+main = "Normal
+Q-Q Plot of Square Root of 'oldpeak'", 
+ylab = "Quantiles of Square Root of 'data ",
+xlab = "Quantiles of a Normal Distribution")
+qqline(sqrt.oldpeak,
+col = "blue",
+datax = TRUE) 
+
+```
+
+### Identify Outliers
+
+
+
+### Data Set Ready for EDA
+
+```{r echo=FALSE}
+head(df) %>% pander(style = "grid", caption = "Heart Disease Data Set")
+```
+
+_Note._ Information about patients who were or were not 
+                       diagnosed with heart disease"
+
+
+## Exploratory Data Analysis
+
+
+### Univariate Analysis
+- The following section will examine each variable at a time through summarization and visualizations
+
+
+#### Variable: _Age_
+- The following histogram looks at the distribution of ages.
+
+
+```{r echo = FALSE, fig.align='center'}
+# Create a histogram with a vertical line indicating the median age
+df %>%
+    ggplot(aes(age)) +
+    geom_histogram(binwidth = 5, color = "black",fill = "grey") +
+    geom_vline(xintercept = median(df$age), lwd = 2, color ="firebrick") +
+    labs(title = "Distribution of Age",
+         x = "Ages",
+         y = "Number of Patients") +
+    theme_bw() 
+```
+
+- The following table describes the range of ages.
+
+```{r echo= FALSE}
+# Create a table indicating the range of Ages
+df %>% 
+  summarize(Youngest = min(age),
+            Median = median(age),
+            Oldest = max(age)) %>% 
+  pander(style = "grid", caption = "Range of Ages Table")
+```
+ 
+ - The following table describes the frequency and relative frequency of age groups.
+
+
+```{r echo= FALSE}
+# Create a frequency distribution table for age groups
+
+df %>% 
+  mutate(Age_Groups = cut(age, 
+            breaks=c(20,29,30,39,40,49,50,59,60,69,70,79))) %>%
+              group_by(Age_Groups) %>%
+              dplyr::summarize(Frequency = n(), 
+                               Relative_Frequency = round(n()/nrow(df),3)) %>%
+  pander(style = "grid", caption = "Frequency Distribution Table by Age Groups")
+  
+
+
+```
+
+_Note._ This table shows the frequency and relative frequency of age groups. The age group with the highest number of patients are in their 50s.
+
+
+#### Variable: _Sex_
+- The following bar graph describes the frequency of male and female patients in this data-set.
+
+
+```{r echo = FALSE,fig.align='center'}
+# This code creates a bar graph of sex and displays each class' frequency
+ggplot(df, aes(x=sex, fill=sex )) + 
+  geom_bar() +
+  scale_fill_grey(start = 0.75, end = 0.25) +
+  theme_bw() +
+  labs(title="Frequency of Sex",
+        x ="Sex", y = "Frequency")
+```
+
+```{r echo = FALSE}
+# Create a proportion table for age by target classes
+sex_tbl <- table(df$sex)
+sex_tbl <- addmargins(A = sex_tbl, FUN = list(total = sum), quiet = TRUE)
+sex_df <- as.data.frame(sex_tbl)
+colnames(sex_df) <- c("Sex", "Frequency")
+sex_df %>% pander(style = "grid", caption = "Contingency Table for Sex")
+```
+
+
+_Note._ This is a contingency table that describes the frequency of male and female patients in this data-set
+
+
+
+#### Variable: _Chest Pain_
+
+```{r echo = FALSE}
+cp_df <- df %>% filter(target == 1) %>% select(cp)
+
+cp_df <- cp_df%>% group_by(cp) %>% dplyr::summarize(Frequency = n(), 
+                               Relative_Frequency = round(n()/nrow(df),3)) 
+colnames(cp_df) <- c("Chest Pain Type", "Frequency", "Relative Frequency")
+```
+
+- The following dot chart looks at the frequency of patients who have heart disease by chest pain type
+
+
+
+
+```{r echo = FALSE ,fig.align='center', fig.height = 4, fig.width = 7}
+
+ggplot(cp_df, aes(x = `Frequency`,
+                  y = reorder(`Chest Pain Type`, `Frequency`))) +
+  geom_point(aes(size = 4, shape = `Chest Pain Type`)) +
+  theme_bw() + 
+  labs(title="Chest Pain Types with Heart Disease",
+        x ="Frequency", y = "") +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(color = "black",
+        linetype = "dotted")) +
+  guides(color = FALSE, size = FALSE)
+
+```
+- The following table looks at the frequency and relative frequency distribution of chest pain types by those who do have the heart disease.
+
+
+
+```{r echo= FALSE}
+cp_df %>% pander(style = "grid", caption = "Frequency Distribution Table by Chest Pain Type with Heart Disease")
+```
+_Note._ This distribution tables describes that the chest pain type of non-anginal pain has the highest proportion of patients in this data set who also has the heart disease.
+
+
+
+
+### Summarization and Visualization of Multivariate Relationships
+
+
+#### Exploring Variables: _Age_ and _Target_
+- The following histogram visualizes the proportions of age groups that has heart disease.
+
+
+```{r echo = FALSE, fig.align='center'}
+# This code chunk creates a histogram of ages with target overlaid
+ggplot(df, aes(x = age)) +
+  geom_histogram(binwidth = 5, aes(fill = target), 
+                 color = "black", position = "fill") +
+  scale_fill_manual(values=c("#999999", "firebrick")) +
+  theme_bw() +
+  labs(title="Proportion of Age with Target Overlaid",
+        x ="Age", y = "Proportions")
+```
+
+
+_Note._ This histogram shows that patients under the age of 50 are more frequent to have a heart disease than those over the age of 50.
+
+
+- The following creates a table showing the frequency and relative frequency of age groups that has heart disease.
+
+
+
+```{r echo= FALSE}
+# The following code will produce a table displaying the frequency and relative frequency
+df %>% filter(target == 1) %>%
+  mutate(Age_Groups = cut(age, 
+            breaks=c(20,29,30,39,40,49,50,59,60,69,70,79))) %>%
+              group_by(Age_Groups) %>%
+              dplyr::summarize(Frequency = n(), 
+                               Relative_Frequency = round(n()/nrow(df),3)) %>%
+  pander(style = "grid", caption = "Frequency Distribution Table by Age Groups who has Heart Disease")
+```
+
+
+_Note._ This table shows the frequency and relative frequency of age groups that has heart disease. The age group that has heart disease with the highest number of patients are in their 50s.
+
+
+#### Exploring Variables: _Sex_ and _Target_
+
+- The following bar graph compare the proportions of sex with the presence of heart disease.
+
+```{r echo = FALSE, fig.align='center'}
+# Create a normalized bar graph of sex with target overlaid
+ggplot(df, aes(sex)) + 
+  geom_bar(aes(fill = target), position = "fill") +
+  # Titles and Labels
+  labs(title="Proportion of
+       Sex with Target Overlaid",
+        x ="Sex", y = "Proportions", 
+       fill = "Presence of Heart Disease") + 
+  # Adding color to bar grpahs
+  scale_fill_manual(values=c("#999999", "firebrick")) + 
+  theme_bw()
+```
+_Note._ Proportion of Patients by Sex with Diagnosis Overlaid
+
+
+
+```{r echo = FALSE}
+# Create a proportion table for age by target classes
+sex_table <- round(prop.table(table(df$target, df$sex), margin = 2), 2)
+
+sex_df <- as.data.frame.matrix(sex_table)
+#sex_df <- cbind("Diagnosis" = c("No Heart Disease", "Heart Disease"), sex_df )
+#rownames(sex_df) <- sex_df$Diagnosis
+#sex_df <- subset(sex_df, select = -c(Diagnosis))
+sex_df %>% pander(style = "grid", caption = "Contingency Table for Sex with Target Classes")
+
+```
+
+_Note._ This table summarizes the proportion of sex by heart disease diagnosis. There is a higher proportion of female patients who have heart disease than male patients.
+
+
+
+
+
