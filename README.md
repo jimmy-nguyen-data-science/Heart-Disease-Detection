@@ -6,6 +6,17 @@
 - Nava Roohi 
 - Angela Zhang
 
+
+## Installation
+
+Data Exploration and Modeling was all done in [Jupyter Notebook](https://jupyter.org/).
+
+To clone this repository onto your device, use the commands below:
+
+	1. git init
+	2. git clone https://github.com/jimmy-nguyen-data-science/Heart-Disease-Detection
+  
+
 ## Project Objective
 The purpose of this project is to assist health-care providers and physicians to increase the number of accurate heart disease diagnoses. The  problem for this project can be framed  as:
 
