@@ -2,7 +2,8 @@
 
 ## Completed: 19 April 2021 
 
-## Collaborators 
+## Authors and Collaborators
+- [Jimmy Nguyen](https://github.com/jimmy-nguyen-data-science)
 - Nava Roohi 
 - Angela Zhang
 
