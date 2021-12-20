@@ -55,8 +55,8 @@ The purpose of this project is to utilize the information about each patient to 
 ## Presentations and Reports
 * [Final Report](https://github.com/Jimmy-Nguyen-Data-Science/Heart-Disease-Detection/blob/main/Report/Project%20Report.pdf)
 * [Presentation Slides](https://github.com/Jimmy-Nguyen-Data-Science/Heart-Disease-Detection/blob/main/Presentation/Project%20Presentation.pdf)
-* [Python Code](https://github.com/Jimmy-Nguyen-Data-Science/Heart-Disease-Detection/blob/main/Code/Python%20Jupyter%20Notebook/Python%20Jupyter%20Notebook.pdf)
-* [R-programming Code](https://github.com/Jimmy-Nguyen-Data-Science/Heart-Disease-Detection/blob/main/Code/R%20code/Data%20Exploration%20-%20R.pdf)
+* [Python Code](https://github.com/jimmy-nguyen-data-science/Heart-Disease-Detection/blob/main/Code/Python%20Jupyter%20Notebook/Python%20Code%20%20-%20PDF.pdf)
+* [R-programming Code](https://github.com/jimmy-nguyen-data-science/Heart-Disease-Detection/blob/main/Code/R%20code/Data%20Exploration%20-%20PDF.pdf)
 
 
 ## Data Visualizations
