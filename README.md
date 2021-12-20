@@ -53,27 +53,27 @@ The purpose of this project is to utilize the information about each patient to 
 
 
 ## Presentations and Reports
-* [Final Report](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Report/Project%20Report.pdf)
-* [Presentation Slides](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Presentation/Project%20Presentation.pdf)
-* [Python Code](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Code/Python%20Jupyter%20Notebook/Python%20Jupyter%20Notebook.pdf)
-* [R-programming Code](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Code/R%20code/Data%20Exploration%20-%20R.pdf)
+* [Final Report](https://github.com/Jimmy-Nguyen-Data-Science/Heart-Disease-Detection/blob/main/Report/Project%20Report.pdf)
+* [Presentation Slides](https://github.com/Jimmy-Nguyen-Data-Science/Heart-Disease-Detection/blob/main/Presentation/Project%20Presentation.pdf)
+* [Python Code](https://github.com/Jimmy-Nguyen-Data-Science/Heart-Disease-Detection/blob/main/Code/Python%20Jupyter%20Notebook/Python%20Jupyter%20Notebook.pdf)
+* [R-programming Code](https://github.com/Jimmy-Nguyen-Data-Science/Heart-Disease-Detection/blob/main/Code/R%20code/Data%20Exploration%20-%20R.pdf)
 
 
 ## Data Visualizations
-![Age Groups](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/Age%20Groups.png)
+![Age Groups](https://github.com/Jimmy-Nguyen-Data-Science/Heart-Disease-Detection/blob/main/Data%20Visuals/Age%20Groups.png)
 
-![Age Groups vs Resting Blood Pressure](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/Age%20Groups%20vs%20Resting%20Blood%20Pressure.png)
+![Age Groups vs Resting Blood Pressure](https://github.com/Jimmy-Nguyen-Data-Science/Heart-Disease-Detection/blob/main/Data%20Visuals/Age%20Groups%20vs%20Resting%20Blood%20Pressure.png)
 
-![Sex vs Heart Disease](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/Sex%20vs.%20Heart%20Disease.png)
+![Sex vs Heart Disease](https://github.com/Jimmy-Nguyen-Data-Science/Heart-Disease-Detection/blob/main/Data%20Visuals/Sex%20vs.%20Heart%20Disease.png)
 
 
 ## Performance Results
 
-![Performance Table](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/Evaluation%20of%20Models.png)
+![Performance Table](https://github.com/Jimmy-Nguyen-Data-Science/Heart-Disease-Detection/blob/main/Data%20Visuals/Evaluation%20of%20Models.png)
 
-![k-Folds Cross-Validation Table](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/K-folds%20Cross%20Validation%20Table.png)
+![k-Folds Cross-Validation Table](https://github.com/Jimmy-Nguyen-Data-Science/Heart-Disease-Detection/blob/main/Data%20Visuals/K-folds%20Cross%20Validation%20Table.png)
 
-![ROC-AUC Curves](https://github.com/Jimmy-Nguyen-Data-Science-Portfolio/Heart-Disease-Detection/blob/main/Data%20Visuals/ROC%20AUC%20Curves.png)
+![ROC-AUC Curves](https://github.com/Jimmy-Nguyen-Data-Science/Heart-Disease-Detection/blob/main/Data%20Visuals/ROC%20AUC%20Curves.png)
 
 
 ## Original Data 
